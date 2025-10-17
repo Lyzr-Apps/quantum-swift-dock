@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Tooltip } from 'recharts'
 import { FinancialMetrics } from '../types/budget'
-import { useState, useEffect } from 'react'
 
 interface BudgetAnalysisProps {
   data: FinancialMetrics
@@ -10,12 +8,6 @@ interface BudgetAnalysisProps {
 }
 
 export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
-  const [localData, setLocalData] = useState(data)
-
-  useEffect(() => {
-    setLocalData(data)
-  }, [data])
-
   if (isLoading) {
     return (
       <Card>
@@ -48,7 +40,7 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
           <CardTitle className="text-base font-medium">Total Income</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold text-green-600">${localData.summary.total_income.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-green-600">${data.summary.total_income.toFixed(2)}</p>
         </CardContent>
       </Card>
 
@@ -57,7 +49,7 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
           <CardTitle className="text-base font-medium">Total Expenses</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold text-red-600">${localData.summary.total_expenses.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-red-600">${data.summary.total_expenses.toFixed(2)}</p>
         </CardContent>
       </Card>
 
@@ -67,9 +59,9 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
         </CardHeader>
         <CardContent>
           <p className={`text-2xl font-bold ${
-            localData.summary.net_balance >= 0 ? 'text-green-600' : 'text-red-600'
+            data.summary.net_balance >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
-            ${localData.summary.net_balance.toFixed(2)}
+            ${data.summary.net_balance.toFixed(2)}
           </p>
         </CardContent>
       </Card>
@@ -79,11 +71,11 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
           <CardTitle className="text-base font-medium">Budget Status</CardTitle>
         </CardHeader>
         <CardContent>
-          <Badge className={`px-3 py-1 ${getStatusColor(localData.budget_analysis.status)}`}>
-            {localData.budget_analysis.status}
+          <Badge className={`px-3 py-1 ${getStatusColor(data.budget_analysis.status)}`}>
+            {data.budget_analysis.status}
           </Badge>
           <p className="text-sm text-gray-600 mt-2">
-            {localData.budget_analysis.percentage_used.toFixed(1)}% used
+            {data.budget_analysis.percentage_used.toFixed(1)}% used
           </p>
         </CardContent>
       </Card>
@@ -98,18 +90,18 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
             <div>
               <div className="flex justify-between items-center mb-3">
                 <span className="text-sm text-gray-600">Monthly Budget</span>
-                <span className="font-medium">${localData.budget_analysis.monthly_budget.toFixed(2)}</span>
+                <span className="font-medium">${data.budget_analysis.monthly_budget.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center mb-3">
                 <span className="text-sm text-gray-600">Amount Spent</span>
-                <span className="font-medium text-red-600">${localData.budget_analysis.spent.toFixed(2)}</span>
+                <span className="font-medium text-red-600">${data.budget_analysis.spent.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center mb-3">
                 <span className="text-sm text-gray-600">Remaining</span>
                 <span className={`font-medium ${
-                  localData.budget_analysis.remaining >= 0 ? 'text-green-600' : 'text-red-600'
+                  data.budget_analysis.remaining >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  ${localData.budget_analysis.remaining.toFixed(2)}
+                  ${data.budget_analysis.remaining.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -123,15 +115,15 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
                 <div className="w-full bg-gray-200 rounded-full h-4">
                   <div
                     className={`h-4 rounded-full transition-all duration-300 ${
-                      localData.budget_analysis.percentage_used > 100 ? 'bg-red-500' :
-                      localData.budget_analysis.percentage_used > 80 ? 'bg-yellow-500' :
+                      data.budget_analysis.percentage_used > 100 ? 'bg-red-500' :
+                      data.budget_analysis.percentage_used > 80 ? 'bg-yellow-500' :
                       'bg-green-500'
                     }`}
-                    style={{ width: `${Math.min(localData.budget_analysis.percentage_used, 100)}%` }}
+                    style={{ width: `${Math.min(data.budget_analysis.percentage_used, 100)}%` }}
                   />
                 </div>
                 <p className="text-center text-sm font-medium mt-2">
-                  {localData.budget_analysis.percentage_used.toFixed(1)}% of budget used
+                  {data.budget_analysis.percentage_used.toFixed(1)}% of budget used
                 </p>
               </div>
             </div>
@@ -139,7 +131,7 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
         </CardContent>
       </Card>
 
-      {localData.category_breakdown.length > 0 && (
+      {data.category_breakdown.length > 0 && (
         <Card className="md:col-span-2 lg:col-span-4">
           <CardHeader>
             <CardTitle>Top Spending Categories</CardTitle>
@@ -147,7 +139,7 @@ export function BudgetAnalysis({ data, isLoading }: BudgetAnalysisProps) {
           </CardHeader>
           <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {localData.category_breakdown.slice(0, 4).map((category, index) => (
+            {data.category_breakdown.slice(0, 4).map((category, index) => (
               <div key={category.category} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                 <div>
                 <span className="font-medium">{category.category}</span>

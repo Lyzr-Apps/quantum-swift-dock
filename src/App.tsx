@@ -277,19 +277,26 @@ Provide a comprehensive financial analysis including total income, expenses, net
               <>
                 <BudgetAnalysis data={analysisResult.result} isLoading={isAnalyzing} />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FinancialCharts
-                    data={analysisResult.result.chart_data}
-                    transactions={transactions}
-                  />
-                  <TransactionList
-                    transactions={transactions}
-                    onEdit={(transaction) => {
-                      setEditingTransaction(transaction)
-                      setShowModal(true)
-                    }}
-                    onDelete={deleteTransaction}
-                  />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2">
+                    <FinancialCharts
+                      data={analysisResult.result.chart_data}
+                      transactions={transactions}
+                    />
+                  </div>
+                  <div>
+                    <div className="space-y-6">
+                      <BudgetProgressBar data={analysisResult.result.chart_data.progress_bar} />
+                      <TransactionList
+                        transactions={transactions}
+                        onEdit={(transaction) => {
+                          setEditingTransaction(transaction)
+                          setShowModal(true)
+                        }}
+                        onDelete={deleteTransaction}
+                      />
+                    </div>
+                  </div>
                 </div>
               </>
             )}
