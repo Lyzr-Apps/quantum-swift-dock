@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Edit, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Transaction } from '../types/budget'
+import type { Transaction } from '../types/budget'
 
 export const categories = [
   'Food & Dining',

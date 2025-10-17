@@ -22,19 +22,9 @@ export interface CategoryBreakdown {
 }
 
 export interface ChartData {
-  pie_chart: Array<{
-    category: string
-    value: number
-  }>
-  bar_chart: Array<{
-    category: string
-    amount: number
-  }>
-  progress_bar: {
-    used: number
-    total: number
-    percentage: number
-  }
+  pie_chart: { category: string; value: number }[]
+  bar_chart: { category: string; amount: number }[]
+  progress_bar: { used: number; total: number; percentage: number }
 }
 
 export interface FinancialMetrics {
